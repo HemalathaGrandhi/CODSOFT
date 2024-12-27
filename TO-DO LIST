@@ -1,0 +1,95 @@
+import os
+
+class ToDoList:
+    def __init__(self):
+        self.tasks = []
+
+    def display_menu(self):
+        print("\nTo-Do List Application")
+        print("1. View Tasks")
+        print("2. Add Task")
+        print("3. Update Task")
+        print("4. Delete Task")
+        print("5. Mark Task as Completed")
+        print("6. Exit")
+
+    def view_tasks(self):
+        if not self.tasks:
+            print("\nNo tasks available.")
+            return
+        print("\nYour Tasks:")
+        for idx, task in enumerate(self.tasks, 1):
+            status = 'Done' if task['completed'] else 'Pending'
+            print(f"{idx}. {task['title']} [{status}]")
+
+    def add_task(self):
+        title = input("Enter task title: ").strip()
+        if title:
+            self.tasks.append({"title": title, "completed": False})
+            print("Task added successfully!")
+        else:
+            print("Task title cannot be empty.")
+
+    def update_task(self):
+        self.view_tasks()
+        try:
+            task_number = int(input("Enter task number to update: "))
+            if 1 <= task_number <= len(self.tasks):
+                new_title = input("Enter new task title: ").strip()
+                if new_title:
+                    self.tasks[task_number - 1]['title'] = new_title
+                    print("Task updated successfully!")
+                else:
+                    print("Task title cannot be empty.")
+            else:
+                print("Invalid task number.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+    def delete_task(self):
+        self.view_tasks()
+        try:
+            task_number = int(input("Enter task number to delete: "))
+            if 1 <= task_number <= len(self.tasks):
+                del self.tasks[task_number - 1]
+                print("Task deleted successfully!")
+            else:
+                print("Invalid task number.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+    def mark_completed(self):
+        self.view_tasks()
+        try:
+            task_number = int(input("Enter task number to mark as completed: "))
+            if 1 <= task_number <= len(self.tasks):
+                self.tasks[task_number - 1]['completed'] = True
+                print("Task marked as completed!")
+            else:
+                print("Invalid task number.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+    def run(self):
+        while True:
+            self.display_menu()
+            choice = input("\nEnter your choice: ").strip()
+            if choice == '1':
+                self.view_tasks()
+            elif choice == '2':
+                self.add_task()
+            elif choice == '3':
+                self.update_task()
+            elif choice == '4':
+                self.delete_task()
+            elif choice == '5':
+                self.mark_completed()
+            elif choice == '6':
+                print("Exiting To-Do List Application. Goodbye!")
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    app = ToDoList()
+    app.run()
